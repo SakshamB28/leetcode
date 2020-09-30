@@ -1,0 +1,40 @@
+//This question was asked into LeetCode September Challenge 
+// I solved this question using Dynamic Programming
+
+class Solution {
+    static int[][] dp;
+     int find(int cur,int n,int cost,int []nums){
+        if(cur == n-2 || cur == n-1)
+                return cost;
+        int max = 0;
+        for(int i = cur+2;i<n;i++){
+        int cost1;
+          if(dp[i][nums[i] + cost] !=-1 )
+                cost1 = dp[i][nums[i] + cost];
+          else
+              cost1 = dp[i][cost + nums[i]] =  find(i,n,cost + nums[i],nums);
+          max = Math.max(max,cost1);     
+        }
+        
+        return max;        
+    }
+    int rob(int[] nums) {
+        
+        int max = 0, n = nums.length;
+        
+        dp = new int[n][50000];
+        for(int i = 0;i<n;i++)
+                Arrays.fill(dp[i],-1);
+        
+      for(int i = 0;i<n;i++){
+          int cost;
+          if(dp[i][nums[i]]!=-1)
+                cost = dp[i][nums[i]];
+          else
+              cost = dp[i][nums[i]] = find(i,n,nums[i],nums);
+          max = Math.max(max,cost);
+      }
+        
+        return max;
+    }
+}
